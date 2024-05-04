@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=sqlite:///dev.db
+
+  db:
+    image: "arm32v7/alpine:latest"
+    volumes:
+      - ./dev.db:/dev/db.sqlite3
