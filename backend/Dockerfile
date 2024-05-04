@@ -1,29 +1,26 @@
-FROM node:20-alpine as builder
-
-ENV NODE_ENV build
-
-USER node
-WORKDIR /home/node
-
-COPY package*.json ./
-RUN npm ci
-
-COPY --chown=node:node . .
-RUN npx prisma generate \
-    && npm run build \
-    && npm prune --omit=dev
-
-# ---
-
 FROM node:20-alpine
 
-ENV NODE_ENV production
+RUN addgroup app && adduser -S -G app app
 
-USER node
-WORKDIR /home/node
+USER app
 
-COPY --from=builder --chown=node:node /home/node/package*.json ./
-COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
-COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
+WORKDIR /app
+
+COPY package*.json ./
+COPY ./prisma prisma
+
+USER root
+
+RUN chown -R app:app .
+
+USER app
+
+RUN npx prisma generate --schema=./prisma/schema.prisma
+
+RUN npm install
+
+COPY . .
+
 EXPOSE 3000
-CMD ["node", "dist/server.js"]
+
+CMD ["npm" ,"run", "start:prod"]
