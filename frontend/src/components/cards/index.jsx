@@ -1,5 +1,5 @@
 import "./style.css"
-
+import { Link } from 'react-router-dom';
 const Cards = ({products}) => {
     return(
         <div className="container-cards">
@@ -11,7 +11,9 @@ const Cards = ({products}) => {
                     <h2 id="title">{prod.name}</h2>
                     <p id="tag">{prod.tag}</p>
                     <p id="price">${prod.price}</p>
-                    <label id="label-cart"><button id="cart">+</button> Add to Cart</label>
+                    <Link to={`/${prod.id}`}>
+                    <label id="label-cart"><button id="cart">+</button>Details</label>
+                    </Link>
                 </div>
             ))}
         </div>

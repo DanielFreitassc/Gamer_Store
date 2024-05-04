@@ -3,7 +3,7 @@
     flex-direction: column;
     background-color: #2d2d2d;
     height: 100vh;
-    width: 363px;
+    width: 250px;
 }
 
 #container-buttons {
@@ -12,7 +12,7 @@
     align-items: center;
     flex-direction: column;
 }
-.button-side {
+.button-side1 {
     height: 30px;
     width: 100px;    
     margin: 16px;
@@ -20,4 +20,63 @@
     border-radius: 8px;
     border-style: none;
     background: none;
+    border: 1px solid black;
+}
+.button-side1:hover{
+    background-color: rgb(26, 26, 26);
+}
+.button-side2 {
+    height: 30px;
+    width: 100px;    
+    margin: 16px;
+    color: white;
+    border-radius: 8px;
+    border-style: none;
+    background: none;
+    border: 1px solid black;
+}
+.button-side2:hover{
+    background-color: rgb(26, 26, 26);
+}
+.button-side3 {
+    height: 30px;
+    width: 100px;    
+    margin: 16px;
+    color: white;
+    border-radius: 8px;
+    border-style: none;
+    background: none;
+    border: 1px solid black;
+}
+.button-side3:hover{
+    background-color: rgb(26, 26, 26);
+}
+.button-side4 {
+    height: 30px;
+    width: 100px;    
+    margin: 16px;
+    color: white;
+    border-radius: 8px;
+    border-style: none;
+    background: none;
+    border: 1px solid black;
+}
+.button-side4:hover{
+    background-color: rgb(26, 26, 26);
+}
+.button-side5 {
+    height: 30px;
+    width: 100px;    
+    margin: 16px;
+    color: white;
+    border-radius: 8px;
+    border-style: none;
+    background: none;
+    border: 1px solid black;
+}
+.button-side5:hover{
+    background-color: rgb(26, 26, 26);
+}
+#container-button:hover {
+    background-color: #181818;
 }

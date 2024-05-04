@@ -2,6 +2,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom"
 import Home from "./pages/home"
 import "./styles.css"
 import Register from "./pages/cadastro"
+import Details from "./pages/details"
 function App() {
   
 
@@ -13,6 +14,10 @@ function App() {
       }/>
       <Route path="/cadastro" element={
         <Register/>
+      }/>
+
+      <Route path="/:id" element={
+        <Details/>
       }/>
     </Routes>
     </BrowserRouter>

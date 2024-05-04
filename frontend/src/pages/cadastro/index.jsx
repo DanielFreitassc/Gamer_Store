@@ -1,5 +1,6 @@
 import { useState } from "react";
 import productsFetch from "../../axios/config";
+import "./style.css"
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -20,15 +21,18 @@ const Register = () => {
         }
     };
 
-    return( 
-        <div id="container-register">
-            <form onSubmit={handleSubmit}>
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
-                <input type="text" value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image" />
-                <input type="text" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="Tag" />
-                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
-                <button type="submit">Register</button>
-            </form>
+    return(
+        <div id="c-divs">
+            <div id="container-register">
+                <h1 id="title-form">Cadastro</h1>
+                <form id="container-form" onSubmit={handleSubmit}>
+                    <input className="input" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" required/>
+                    <input className="input" type="text" value={image} onChange={(e) => setImage(e.target.value)} placeholder="Image" required/>
+                    <input className="input" type="text" value={tag} onChange={(e) => setTag(e.target.value)} placeholder="Tag" required/>
+                    <input className="input" type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" required/>
+                    <button className="input"  type="submit">Register</button>
+                </form>
+            </div>
         </div>
     )
 }
