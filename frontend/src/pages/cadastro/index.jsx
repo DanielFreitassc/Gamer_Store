@@ -6,12 +6,12 @@ const Register = () => {
     const [name, setName] = useState("");
     const [image, setImage] = useState("");
     const [tag, setTag] = useState("");
-    const [price, setPrice] = useState("");
+    const [price, setPrice] = useState(0);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const product = { name, image, tag, price };
+        const product = { name, image, tag, price: Number(price) };
 
         try {
             const response = await productsFetch.post('/', product);
