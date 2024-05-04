@@ -1,21 +1,29 @@
-import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
-import { HttpCode, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { EntityProducts } from './product.entity';
+import { BadRequestException, HttpCode, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductDto } from './product.dto';
-import {v4 as uuid} from 'uuid'
-import { NotFoundError } from 'rxjs';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ProductsService {
-    constructor(private readonly db: InMemoryDBService<EntityProducts>){}
+    constructor(private readonly prisma: PrismaService){}
 
-    createProduct(product: ProductDto): ProductDto{
-        product.id = uuid();
-        return this.db.create(product)
+    async createProduct(product: ProductDto): Promise<ProductDto | null>{
+        return this.prisma.products.create({
+            data: {
+                name: product.name,
+                image: product.image,
+                price: product.price,
+                tag: product.tag,
+            }
+        })
     }
 
-    getProduct(id:string){
-        const product = this.db.get(id)
+    async getProduct(id:number): Promise<ProductDto | null>{
+         
+        const product = await this.prisma.products.findFirst({
+            where:{
+                id:id
+            }
+        })
 
         if(!product){
             throw new NotFoundException("Produto não encontrado")
@@ -25,34 +33,56 @@ export class ProductsService {
     }
 
     listProducts(){
-        return this.db.getAll()
+        return this.prisma.products.findMany()
     }
 
-    updateProduct(product:ProductDto){
-        const findId = this.db.get(product.id)
-
-        if(!findId){
-            throw new NotFoundException('Produto não encontrado')
+    async updateProduct(product:ProductDto): Promise<ProductDto | null>{
+        
+        if(!product.id){
+            throw new BadRequestException("Id não enviado")
         }
 
-        this.db.update({
-            id: product.id,
-            image: product.image, 
-            name: product.name,
-            price: product.price,
-            tag: product.tag, 
+        const productId = Number(product.id);
+
+        const findUnique = await this.prisma.products.findFirst({
+            where:{
+                id: productId
+            }
+        })
+        
+        if(!findUnique){
+            throw new NotFoundException('Usuario não encontrado')
+        }
+
+       return await this.prisma.products.update({
+            where:{
+                id: productId
+            },
+            data:{
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                tag: product.tag
+            }
+        })
+    }
+
+    async deleteProduct(id: number){
+        const product = await this.prisma.products.findFirst({
+            where:{
+                id: id
+            }
         })
 
-        return 
-    }
-
-    deleteProduct(id: string){
-        const findId = this.db.get(id)
-
-        if(!findId){
+        if(!product){
             throw new NotFoundException("Produto não encontrado")
         }
+    
+        return this.prisma.products.delete({
+            where:{
+                id:id
+            }
+        })
 
-        return this.db.delete(id)
     }
 }

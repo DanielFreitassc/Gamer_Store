@@ -1,10 +1,10 @@
-import { IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class ProductDto {
 
-    @IsUUID()
+    @IsNumber()
     @IsOptional()
-    id: string;
+    id: number;
 
     @IsString()
     image: string;
@@ -17,4 +17,8 @@ export class ProductDto {
 
     @IsString()
     tag: string;
+
+    @IsDate()
+    @IsOptional()
+    created_at: Date;
 }
