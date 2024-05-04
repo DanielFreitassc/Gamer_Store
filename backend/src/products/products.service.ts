@@ -36,17 +36,11 @@ export class ProductsService {
         return this.prisma.products.findMany()
     }
 
-    async updateProduct(product:ProductDto): Promise<ProductDto | null>{
+    async updateProduct(id:number, product:ProductDto): Promise<ProductDto | null>{
         
-        if(!product.id){
-            throw new BadRequestException("Id não enviado")
-        }
-
-        const productId = Number(product.id);
-
         const findUnique = await this.prisma.products.findFirst({
             where:{
-                id: productId
+                id: id
             }
         })
         
@@ -56,7 +50,7 @@ export class ProductsService {
 
        return await this.prisma.products.update({
             where:{
-                id: productId
+                id: id
             },
             data:{
                 image: product.image,

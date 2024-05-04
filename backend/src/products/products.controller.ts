@@ -26,9 +26,9 @@ export class ProductsController {
     }
 
     @HttpCode(HttpStatus.OK)
-    @Put()
-    update(@Body() products: ProductDto){
-        return this.productServices.updateProduct(products)
+    @Put('/:id')
+    update(@Param('id') id:string, @Body() products: ProductDto){
+        return this.productServices.updateProduct(Number(id),products)
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)

@@ -1,29 +1,29 @@
-ARG IMAGE=node:20.10
+FROM node:20-alpine as builder
 
-#COMMON
-FROM $IMAGE as builder
-WORKDIR /app
-COPY . .
-RUN npm i
-
-#DEVELOPMENT
-FROM builder as dev 
-CMD [""]
-
-#PROD MIDDLE STEP
-FROM builder as prod-build
-RUN npm run build
-RUN npm prune --production
-
-#PROD
-FROM $IMAGE as prod
-COPY --chown=node:node --from=prod-build /app/dist /app/dist
-COPY --chown=node:node --from=prod-build /app/node_modules /app/node_modules
-COPY --chown=node:node --from=prod-build /app/.env /app/dist/.env
-
-ENV NODE_ENV=production
-ENTRYPOINT ["node", "./dist/main.js"]
-WORKDIR /app/dist
-CMD [""]
+ENV NODE_ENV build
 
 USER node
+WORKDIR /home/node
+
+COPY package*.json ./
+RUN npm ci
+
+COPY --chown=node:node . .
+RUN npx prisma generate \
+    && npm run build \
+    && npm prune --omit=dev
+
+# ---
+
+FROM node:20-alpine
+
+ENV NODE_ENV production
+
+USER node
+WORKDIR /home/node
+
+COPY --from=builder --chown=node:node /home/node/package*.json ./
+COPY --from=builder --chown=node:node /home/node/node_modules/ ./node_modules/
+COPY --from=builder --chown=node:node /home/node/dist/ ./dist/
+EXPOSE 3000
+CMD ["node", "dist/server.js"]
