@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const productsFetch = axios.create({
-    baseURL:"http://localhost:3000/products",
+    baseURL:"https://gamer-store.onrender.com/products",
     headers: {
         'Content-Type': 'application/json',
       },
