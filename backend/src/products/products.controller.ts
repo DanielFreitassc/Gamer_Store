@@ -22,18 +22,18 @@ export class ProductsController {
     @HttpCode(HttpStatus.OK)
     @Get('/:id')
     findById(@Param('id') id: string){
-        return this.productServices.getProduct(id)
+        return this.productServices.getProduct(+id)
     }
 
     @HttpCode(HttpStatus.OK)
     @Put()
-    update(products: ProductDto){
+    update(@Body() products: ProductDto){
         return this.productServices.updateProduct(products)
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete("/:id")
     delete(@Param('id') id:string){
-        return this.productServices.deleteProduct(id)
+        return this.productServices.deleteProduct(Number(id))
     }
 }
